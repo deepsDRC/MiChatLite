@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D4A942533057E6320067997F /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = D4A942523057E6320067997F /* Supabase */; };
+		D4A9425A3057E9DB0067997F /* Supabase.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D4A942593057E9DB0067997F /* Supabase.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		D4A942193057DC4D0067997F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,8 @@
 		D4A9420B3057DC4A0067997F /* MiChatLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiChatLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A942183057DC4D0067997F /* MiChatLiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiChatLiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A942223057DC4D0067997F /* MiChatLiteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiChatLiteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4A942593057E9DB0067997F /* Supabase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Supabase.xcconfig; sourceTree = "<group>"; };
+		D4AFD879305801C3006ED97E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4A942533057E6320067997F /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +83,8 @@
 		D4A942023057DC4A0067997F = {
 			isa = PBXGroup;
 			children = (
+				D4AFD879305801C3006ED97E /* Info.plist */,
+				D4A942593057E9DB0067997F /* Supabase.xcconfig */,
 				D4A9420D3057DC4A0067997F /* MiChatLite */,
 				D4A9421B3057DC4D0067997F /* MiChatLiteTests */,
 				D4A942253057DC4D0067997F /* MiChatLiteUITests */,
@@ -112,6 +122,7 @@
 			);
 			name = MiChatLite;
 			packageProductDependencies = (
+				D4A942523057E6320067997F /* Supabase */,
 			);
 			productName = MiChatLite;
 			productReference = D4A9420B3057DC4A0067997F /* MiChatLite.app */;
@@ -195,6 +206,9 @@
 			);
 			mainGroup = D4A942023057DC4A0067997F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D4A942513057E6320067997F /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D4A9420C3057DC4A0067997F /* Products */;
 			projectDirPath = "";
@@ -212,6 +226,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4A9425A3057E9DB0067997F /* Supabase.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +286,7 @@
 /* Begin XCBuildConfiguration section */
 		D4A9422A3057DC4D0067997F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4A942593057E9DB0067997F /* Supabase.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -326,6 +342,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -335,6 +352,7 @@
 		};
 		D4A9422B3057DC4D0067997F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4A942593057E9DB0067997F /* Supabase.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -384,6 +402,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -399,7 +418,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YQHK4P5T5A;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_SUPABASE_HOST = "$(MI_SUPABASE_HOST)";
+				INFOPLIST_KEY_SUPABASE_KEY = "$(MI_SUPABASE_KEY)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -431,7 +453,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YQHK4P5T5A;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_SUPABASE_HOST = "$(MI_SUPABASE_HOST)";
+				INFOPLIST_KEY_SUPABASE_KEY = "$(MI_SUPABASE_KEY)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -578,6 +603,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D4A942513057E6320067997F /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D4A942523057E6320067997F /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4A942513057E6320067997F /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D4A942033057DC4A0067997F /* Project object */;
 }

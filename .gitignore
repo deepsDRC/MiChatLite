@@ -5,6 +5,9 @@
 xcuserdata/
 *.xcuserstate
 
+# Xcode shared workspace data
+xcshareddata/
+
 # Xcode build products
 build/
 DerivedData/
@@ -47,3 +50,4 @@ fastlane/test_output/
 .env
 .env.*
 !.env.example
+Supabase.xcconfig
