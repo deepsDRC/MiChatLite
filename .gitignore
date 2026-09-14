@@ -1,0 +1,49 @@
+# Xcode
+.DS_Store
+
+# Xcode user-specific settings
+xcuserdata/
+*.xcuserstate
+
+# Xcode build products
+build/
+DerivedData/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Archives
+*.xcarchive
+
+# Code coverage
+*.xccovarchive
+*.xccovreport
+
+# Provisioning / signing
+*.mobileprovision
+*.provisionprofile
+
+# macOS
+.Trashes
+
+# Temporary files
+*.tmp
+*.temp
+
+# Secrets / local configuration
+.env
+.env.*
+!.env.example
