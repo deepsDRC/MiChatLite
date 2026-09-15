@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import Supabase
 
 struct HomeView: View {
+    let authManager: AuthenticationManager
 
     var body: some View {
         NavigationStack {
@@ -16,12 +16,43 @@ struct HomeView: View {
                 Text("Welcome to MiChatLite")
                     .font(.title)
                     .navigationTitle("Home")
+
+                SignOutButton(authManager: authManager)
+                    .font(.callout)
+                    .buttonStyle(.borderedProminent)
+                    .disabled(authManager.isSigningOut)
+
+                if let errorMessage = authManager.errorMessage {
+                    Text(errorMessage)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
             }
             .padding()
         }
     }
 }
 
+struct SignOutButton: View {
+    let authManager: AuthenticationManager
+
+    var body: some View {
+        Button {
+            Task {
+                await authManager.signOut()
+            }
+        } label: {
+            if authManager.isSigningOut {
+                ProgressView()
+                    .tint(.white)
+            } else {
+                Text("Sign Out")
+                    .font(.callout)
+            }
+        }
+    }
+}
+
 #Preview {
-    HomeView()
+    HomeView(authManager: AuthenticationManager())
 }
