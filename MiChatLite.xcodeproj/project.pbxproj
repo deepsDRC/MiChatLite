@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D4A942533057E6320067997F /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = D4A942523057E6320067997F /* Supabase */; };
-		D4A9425A3057E9DB0067997F /* Supabase.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D4A942593057E9DB0067997F /* Supabase.xcconfig */; };
+		D4AFD8B730585AD6006ED97E /* Supabase.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D4AFD8B630585AD6006ED97E /* Supabase.xcconfig */; };
+		D4AFD8B930585AEC006ED97E /* Supabase.local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D4AFD8B830585AEC006ED97E /* Supabase.local.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,8 +33,9 @@
 		D4A9420B3057DC4A0067997F /* MiChatLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiChatLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A942183057DC4D0067997F /* MiChatLiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiChatLiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A942223057DC4D0067997F /* MiChatLiteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiChatLiteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4A942593057E9DB0067997F /* Supabase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Supabase.xcconfig; sourceTree = "<group>"; };
 		D4AFD879305801C3006ED97E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4AFD8B630585AD6006ED97E /* Supabase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Supabase.xcconfig; sourceTree = "<group>"; };
+		D4AFD8B830585AEC006ED97E /* Supabase.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Supabase.local.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -83,8 +85,9 @@
 		D4A942023057DC4A0067997F = {
 			isa = PBXGroup;
 			children = (
+				D4AFD8B830585AEC006ED97E /* Supabase.local.xcconfig */,
+				D4AFD8B630585AD6006ED97E /* Supabase.xcconfig */,
 				D4AFD879305801C3006ED97E /* Info.plist */,
-				D4A942593057E9DB0067997F /* Supabase.xcconfig */,
 				D4A9420D3057DC4A0067997F /* MiChatLite */,
 				D4A9421B3057DC4D0067997F /* MiChatLiteTests */,
 				D4A942253057DC4D0067997F /* MiChatLiteUITests */,
@@ -226,7 +229,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4A9425A3057E9DB0067997F /* Supabase.xcconfig in Resources */,
+				D4AFD8B930585AEC006ED97E /* Supabase.local.xcconfig in Resources */,
+				D4AFD8B730585AD6006ED97E /* Supabase.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +290,7 @@
 /* Begin XCBuildConfiguration section */
 		D4A9422A3057DC4D0067997F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4A942593057E9DB0067997F /* Supabase.xcconfig */;
+			baseConfigurationReference = D4AFD8B630585AD6006ED97E /* Supabase.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -352,7 +356,7 @@
 		};
 		D4A9422B3057DC4D0067997F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4A942593057E9DB0067997F /* Supabase.xcconfig */;
+			baseConfigurationReference = D4AFD8B630585AD6006ED97E /* Supabase.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -612,6 +616,8 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.5.1;
 			};
+			traits = (
+			);
 		};
 /* End XCRemoteSwiftPackageReference section */
 
