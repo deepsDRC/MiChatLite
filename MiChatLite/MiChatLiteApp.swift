@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct MiChatLiteApp: App {
+
+    @State private var authManager = AuthenticationManager()
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            AuthenticationRootView(authManager: authManager)
+                .task {
+                    await authManager.observeAuthState()
+                }
         }
     }
 }
