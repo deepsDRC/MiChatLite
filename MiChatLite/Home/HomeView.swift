@@ -17,41 +17,41 @@ struct HomeView: View {
                     .font(.title)
                     .navigationTitle("Home")
 
-                SignOutButton(authManager: authManager)
-                    .font(.callout)
-                    .buttonStyle(.borderedProminent)
-                    .disabled(authManager.isSigningOut)
-
-                if let errorMessage = authManager.errorMessage {
-                    Text(errorMessage)
-                        .font(.caption)
-                        .foregroundStyle(.red)
-                }
+//                SignOutButton(authManager: authManager)
+//                    .font(.callout)
+//                    .buttonStyle(.borderedProminent)
+//                    .disabled(authManager.isSigningOut)
+//
+//                if let errorMessage = authManager.errorMessage {
+//                    Text(errorMessage)
+//                        .font(.caption)
+//                        .foregroundStyle(.red)
+//                }
             }
             .padding()
         }
     }
 }
 
-struct SignOutButton: View {
-    let authManager: AuthenticationManager
-
-    var body: some View {
-        Button {
-            Task {
-                await authManager.signOut()
-            }
-        } label: {
-            if authManager.isSigningOut {
-                ProgressView()
-                    .tint(.white)
-            } else {
-                Text("Sign Out")
-                    .font(.callout)
-            }
-        }
-    }
-}
+//struct SignOutButton: View {
+//    let authManager: AuthenticationManager
+//
+//    var body: some View {
+//        Button {
+//            Task {
+//                await authManager.signOut()
+//            }
+//        } label: {
+//            if authManager.isSigningOut {
+//                ProgressView()
+//                    .tint(.white)
+//            } else {
+//                Text("Sign Out")
+//                    .font(.callout)
+//            }
+//        }
+//    }
+//}
 
 #Preview {
     HomeView(authManager: AuthenticationManager())
