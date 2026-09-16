@@ -20,6 +20,7 @@ final class FindUsersViewModel: FindUsersViewModelProtocol {
     var errorMessage: String?
     let findUserService: FindUsersServiceProtocol
     let conversationService: ConversationServiceProtocol
+    let messageService: MessageServiceProtocol
     var searchText: String
     var userProfiles: [Profile]
     var conversationId: UUID?
@@ -29,13 +30,16 @@ final class FindUsersViewModel: FindUsersViewModelProtocol {
         searchText: String = "",
         userProfiles: [Profile] = [],
         findUserService: FindUsersServiceProtocol = FindUsersService(),
-        conversationService: ConversationServiceProtocol = ConversationService()
+        conversationService: ConversationServiceProtocol = ConversationService(),
+        messageService: MessageServiceProtocol = MessageService()
+
     ) {
         self.errorMessage = errorMessage
         self.searchText = searchText
         self.userProfiles = userProfiles
         self.findUserService = findUserService
         self.conversationService = conversationService
+        self.messageService = messageService
     }
 
     func fetchUserProfiles() async {
