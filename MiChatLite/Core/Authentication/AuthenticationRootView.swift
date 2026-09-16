@@ -11,13 +11,17 @@ struct AuthenticationRootView: View {
     let authManager: AuthenticationManager
 
     var body: some View {
-        if authManager.isCheckingSession {
-            ProgressView()
-                .tint(.white)
-        } else if authManager.isAuthenticated {
-            ProfileView(authManager: authManager)
-        } else {
-            LoginView()
+        Group {
+            if authManager.isCheckingSession {
+                ProgressView()
+                    .tint(.white)
+            } else if authManager.isAuthenticated {
+                //ProfileView()
+                MainTabView()
+            } else {
+                LoginView()
+            }
         }
+        .environment(authManager)
     }
 }

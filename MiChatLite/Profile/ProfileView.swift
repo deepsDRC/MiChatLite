@@ -9,16 +9,28 @@ import Supabase
 import SwiftUI
 
 struct ProfileView: View {
-    let authManager: AuthenticationManager
-    @State private var profileVM: ProfileViewModel
+    @Environment(AuthenticationManager.self)
+    private var authManager
 
-    init(authManager: AuthenticationManager) {
-        self.authManager = authManager
-        guard let userID = authManager.currentUser?.id else {
-            fatalError("ProfileView requires an authenticated user")
+    var body: some View {
+        if let userID = authManager.currentUser?.id {
+            ProfileContentView(
+                authManager: authManager,
+                userID: userID
+            )
         }
+    }
+}
 
-        print("Profile user ID:", userID)
+struct ProfileContentView: View {
+    @State private var profileVM: ProfileViewModel
+    let authManager: AuthenticationManager
+    let userID: UUID
+
+    init(authManager: AuthenticationManager, userID: UUID) {
+        self.authManager = authManager
+        self.userID = userID
+
         _profileVM = State(initialValue: ProfileViewModel(userId: userID))
     }
 
@@ -105,11 +117,15 @@ struct ProfileView: View {
 
                     Divider()
 
-                    SignOutButton(authManager: authManager)
-                        .font(.callout)
-                        .buttonStyle(.bordered)
-                        .tint(.red)
-                        .disabled(authManager.isSigningOut)
+                    CommonButton(
+                        buttonImage: "rectangle.portrait.and.arrow.right",
+                        title: "Sign Out",
+                        conditionFlag: authManager.isSigningOut
+                    ) {
+                        Task {
+                            await authManager.signOut()
+                        }
+                    }
 
                     if let errorMessage = profileVM.errorMessage {
                         Text(errorMessage)
@@ -123,30 +139,6 @@ struct ProfileView: View {
         }
         .task {
             await profileVM.fetchProfile()
-        }
-    }
-}
-
-struct SignOutButton: View {
-    let authManager: AuthenticationManager
-
-    var body: some View {
-        Button {
-            Task {
-                await authManager.signOut()
-            }
-        } label: {
-            if authManager.isSigningOut {
-                ProgressView()
-                    .tint(.white)
-            } else {
-                HStack(alignment: .center, spacing: 4) {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-
-                    Text("Sign Out")
-                        .font(.callout)
-                }
-            }
         }
     }
 }
