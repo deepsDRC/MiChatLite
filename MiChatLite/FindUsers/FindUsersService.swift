@@ -6,6 +6,7 @@
 //
 
 import Supabase
+import Foundation
 
 protocol FindUsersServiceProtocol {
     func fetchUserProfiles(for searchText: String) async throws -> [Profile]
