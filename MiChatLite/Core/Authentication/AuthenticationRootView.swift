@@ -16,7 +16,6 @@ struct AuthenticationRootView: View {
                 ProgressView()
                     .tint(.white)
             } else if authManager.isAuthenticated {
-                //ProfileView()
                 MainTabView()
             } else {
                 LoginView()

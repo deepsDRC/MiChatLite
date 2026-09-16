@@ -65,6 +65,16 @@ struct FindUsersView: View {
                 } else {
                     List(viewModel.userProfiles) { profile in
                         FindUsersRow(profile: profile)
+                            .onTapGesture {
+                                Task {
+                                    await viewModel.getConversationId(
+                                        for: profile
+                                    )
+                                }
+                            }
+                    }
+                    .navigationDestination(item: $viewModel.conversationId) { conversationId in
+                        ChatView(conversationId: conversationId)
                     }
                     .listStyle(.plain)
                     .overlay {
