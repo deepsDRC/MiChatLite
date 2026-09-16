@@ -10,11 +10,10 @@ import SwiftUI
 struct MainTabView: View {
     var body: some View {
         TabView {
-            Tab {
+            Tab("Profile", systemImage: "person.circle") {
                 ProfileView()
             }
-
-            Tab {
+            Tab("Find Users", systemImage: "person.2") {
                 FindUsersView()
             }
         }
