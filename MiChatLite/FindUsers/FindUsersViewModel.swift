@@ -35,7 +35,6 @@ final class FindUsersViewModel: FindUsersViewModelProtocol {
 
     func fetchUserProfiles() async {
         isLoading = true
-        userProfiles.removeAll()
         errorMessage = nil
 
         defer {

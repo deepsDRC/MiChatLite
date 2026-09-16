@@ -6,6 +6,7 @@
 //
 
 import XCTest
+
 @testable import MiChatLite
 
 @MainActor
@@ -33,13 +34,17 @@ final class FindUsersViewModelTests: XCTestCase {
         vm.searchText = "ali"
         await vm.fetchUserProfiles()
         let profiles = vm.userProfiles
-        
+
         XCTAssertFalse(profiles.isEmpty)
         XCTAssertTrue(profiles.count == 1)
         XCTAssertTrue(
             profiles.allSatisfy { profile in
-                profile.displayName.localizedCaseInsensitiveContains(vm.searchText) ||
-                profile.username.localizedCaseInsensitiveContains(vm.searchText)
+                profile.displayName.localizedCaseInsensitiveContains(
+                    vm.searchText
+                )
+                    || profile.username.localizedCaseInsensitiveContains(
+                        vm.searchText
+                    )
             }
         )
     }
@@ -65,7 +70,6 @@ final class FindUsersViewModelTests: XCTestCase {
         XCTAssertNotNil(errorMessage)
     }
 
-
 }
 
 enum MockFindUsersServiceError: LocalizedError {
@@ -74,7 +78,7 @@ enum MockFindUsersServiceError: LocalizedError {
     var localizedDescription: String { "No match" }
 }
 
-fileprivate final class MockFindUsersService: FindUsersServiceProtocol {
+private final class MockFindUsersService: FindUsersServiceProtocol {
 
     var mockShouldFail: Bool = false
 
@@ -114,8 +118,8 @@ fileprivate final class MockFindUsersService: FindUsersServiceProtocol {
         }
 
         return profiles.filter { profile in
-            profile.displayName.localizedCaseInsensitiveContains(searchText) ||
-            profile.username.localizedCaseInsensitiveContains(searchText)
+            profile.displayName.localizedCaseInsensitiveContains(searchText)
+                || profile.username.localizedCaseInsensitiveContains(searchText)
         }
     }
 }

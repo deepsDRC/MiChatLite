@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct MiChatLiteApp: App {
-
     @State private var authManager = AuthenticationManager()
     
     var body: some Scene {
