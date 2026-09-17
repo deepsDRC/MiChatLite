@@ -10,6 +10,8 @@ import Supabase
 
 protocol MessageServiceProtocol {
     func fetchMessages(for conversationId: UUID) async throws -> [Message]
+    func sendMessage(with conversationId: UUID, message: String) async throws
+        -> Message
 }
 
 final class MessageService: MessageServiceProtocol {
@@ -24,5 +26,25 @@ final class MessageService: MessageServiceProtocol {
             .value
 
         return messages
+    }
+
+    func sendMessage(with conversationId: UUID, message: String) async throws
+        -> Message
+    {
+
+        let messageReceived: Message =
+            try await supabase
+            .rpc(
+                "send_message",
+                params: [
+                    "p_conversation_id": conversationId.uuidString,
+                    "p_message": message,
+                ]
+            )
+            .single()
+            .execute()
+            .value
+
+        return messageReceived
     }
 }
