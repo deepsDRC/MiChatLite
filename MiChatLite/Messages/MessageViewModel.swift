@@ -10,6 +10,7 @@ import Foundation
 
 protocol MessageViewModelProtocol {
     func fetchMessages(for conversationId: UUID) async
+    func sendMessage(with conversationId: UUID, message: String) async
 }
 
 @Observable final class MessageViewModel: MessageViewModelProtocol {
@@ -32,6 +33,22 @@ protocol MessageViewModelProtocol {
 
         do {
             self.messages = try await messageService.fetchMessages(for: conversationId)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    func sendMessage(with conversationId: UUID, message: String) async {
+        isLoading = true
+        errorMessage = nil
+
+        defer {
+            isLoading = false
+        }
+
+        do {
+            let serverResponse = try await messageService.sendMessage(with: conversationId, message: message)
+            messages.append(serverResponse)
         } catch {
             errorMessage = error.localizedDescription
         }
