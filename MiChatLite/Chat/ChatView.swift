@@ -76,6 +76,12 @@ struct ChatView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await messageViewModel.fetchMessages(for: conversationId)
+            print("Real time starts listening to updates...")
+            await messageViewModel.startListening(for: conversationId)
+        }
+        .onDisappear {
+            print("Calling stop listening...")
+            messageViewModel.stopListening()
         }
     }
 }
