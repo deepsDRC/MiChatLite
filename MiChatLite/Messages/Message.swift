@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Message: Codable, Identifiable {
+nonisolated struct Message: Identifiable, Sendable, Decodable {
+
     let id: UUID
     let conversationId: UUID
     let senderId: UUID
