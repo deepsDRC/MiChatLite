@@ -5,21 +5,18 @@
 //  Created by Deepu Ramachandran on 16/09/26.
 //
 
+//import Auth
 import Foundation
 import SwiftUI
 
 struct ChatView: View {
     let conversationId: UUID
+
     @State private var currentMessage: String = ""
     @State private var messageViewModel = MessageViewModel()
 
-    private func isValidMessage() -> Bool {
-        if currentMessage.trimmed.isBlank {
-            return false
-        }
-
-        return true
-    }
+    @Environment(AuthenticationManager.self)
+    private var authManager
 
     var body: some View {
         VStack {
@@ -35,47 +32,33 @@ struct ChatView: View {
                     }
                 }
             } else {
-                List(messageViewModel.messages) { message in
-                    Text(message.message)
-                }
+                ChatMessagesView(
+                    messages: messageViewModel.messages,
+                    authManager: authManager
+                )
 
-                HStack(alignment: .bottom) {
-                    TextField(
-                        "Enter your message",
-                        text: $currentMessage,
-                        axis: .vertical
-                    )
-                    .textFieldStyle(.roundedBorder)
-                    .lineLimit(1...4)
+                ChatComposerView(
+                    message: $currentMessage,
+                    isLoading: messageViewModel.isLoading
+                ) {
+                    Task {
+                        await messageViewModel.sendMessage(
+                            with: conversationId,
+                            message: currentMessage.trimmed
+                        )
 
-                    Button {
-                        Task {
-                            await messageViewModel.sendMessage(
-                                with: conversationId,
-                                message: currentMessage.trimmed
-                            )
-
-                            if messageViewModel.errorMessage == nil {
-                                currentMessage = ""
-                            }
+                        if messageViewModel.errorMessage == nil {
+                            currentMessage = ""
                         }
-                    } label: {
-                        Image(systemName: "arrow.right")
-                            .font(.system(size: 16, weight: .semibold))
-                            .frame(width: 38, height: 38)
-                            .background(Circle().fill(.black))
-                            .foregroundStyle(.white)
                     }
-                    .disabled(!isValidMessage() || messageViewModel.isLoading)
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
             }
         }
         .navigationTitle("Chat")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await messageViewModel.fetchMessages(for: conversationId)
+
             print("Real time starts listening to updates...")
             await messageViewModel.startListening(for: conversationId)
         }
