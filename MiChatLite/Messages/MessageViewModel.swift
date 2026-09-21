@@ -7,12 +7,26 @@
 
 import Observation
 import Foundation
+import Supabase
+
+struct FailedMessage {
+    let conversationId: UUID
+    let message: String
+}
+
+enum MessageLifeCycleStage {
+    case idle
+    case sending
+    case sent
+    case failed
+}
 
 protocol MessageViewModelProtocol {
     func fetchMessages(for conversationId: UUID) async
     func sendMessage(with conversationId: UUID, message: String) async
     func startListening(for conversationId: UUID) async
     func stopListening()
+    func retryFailedMessage() async
 }
 
 @Observable final class MessageViewModel: MessageViewModelProtocol {
@@ -22,6 +36,9 @@ protocol MessageViewModelProtocol {
     var errorMessage: String? = nil
     var messages: [Message] = []
     var realTimeListenerTask: Task<Void, Never>?
+    var messageLifeCycleStage: MessageLifeCycleStage = .idle
+    var messageSendError: MessageSendError?
+    private var lastFailedMessage: FailedMessage?
 
     init(
         messageService: MessageServiceProtocol = MessageService(),
@@ -46,18 +63,29 @@ protocol MessageViewModelProtocol {
         }
     }
 
+    func retryFailedMessage() async {
+        guard let lastFailedMessage else { return }
+        await sendMessage(with: lastFailedMessage.conversationId,
+                              message: lastFailedMessage.message)
+    }
+    
     func sendMessage(with conversationId: UUID, message: String) async {
-        isLoading = true
-        errorMessage = nil
-
-        defer {
-            isLoading = false
-        }
+        messageLifeCycleStage = .sending
+        messageSendError = nil
+        lastFailedMessage = nil
 
         do {
-            let _ = try await messageService.sendMessage(with: conversationId, message: message)
+            let _ = try await messageService.sendMessage(with: conversationId,
+                                                         message: message)
+
+            messageLifeCycleStage = .sent
         } catch {
-            errorMessage = error.localizedDescription
+            print("Error type:", type(of: error))
+            print("Error:", String(describing: error))
+
+            messageSendError = error as? MessageSendError
+            messageLifeCycleStage = .failed
+            lastFailedMessage = .init(conversationId: conversationId, message: message)
         }
     }
 
