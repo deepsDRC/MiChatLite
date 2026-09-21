@@ -5,20 +5,15 @@
 //  Created by Deepu Ramachandran on 19/09/26.
 //
 
-internal import Auth
 import Foundation
 import SwiftUI
 
 struct ChatMessagesView: View {
     let messages: [Message]
-    let authManager: AuthenticationManager
+    let loggedInUserId: UUID
 
     private func isCurrentUserMessage(message: Message) -> Bool {
-        guard let currentUserId = authManager.currentUser?.id else {
-            fatalError("Unable to fetch user information")
-        }
-
-        return message.senderId == currentUserId
+        message.senderId == loggedInUserId
     }
 
     var body: some View {
@@ -56,12 +51,18 @@ struct ChatMessagesView: View {
                 }
                 .padding()
             }
+            .task {
+                guard let lastMessage = messages.last else { return }
+                withAnimation {
+                    reader.scrollTo(lastMessage.id, anchor: .bottom)
+                }
+            }
             .onChange(of: messages) { _, newValue in
                 if !newValue.isEmpty,
                     let lastMessage = newValue.last
                 {
                     withAnimation {
-                        reader.scrollTo(lastMessage.id)
+                        reader.scrollTo(lastMessage.id, anchor: .bottom)
                     }
                 }
             }

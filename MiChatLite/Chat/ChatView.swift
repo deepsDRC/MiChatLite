@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+internal import Auth
 
 struct ChatView: View {
     let conversationId: UUID
@@ -37,34 +38,42 @@ struct ChatView: View {
                     }
                 }
             } else {
-                ChatMessagesView(
-                    messages: messageViewModel.messages,
-                    authManager: authManager
-                )
+                if let loggedInUserId = authManager.currentUser?.id {
+                    ChatMessagesView(
+                        messages: messageViewModel.messages,
+                        loggedInUserId: loggedInUserId
+                    )
 
-                ChatComposerView(
-                    message: $currentMessage,
-                    messageLifeCycleStage: messageViewModel.messageLifeCycleStage,
+                    ChatComposerView(
+                        message: $currentMessage,
+                        messageLifeCycleStage: messageViewModel.messageLifeCycleStage,
 
-                ) {
-                    Task {
-                        await messageViewModel.sendMessage(
-                            with: conversationId,
-                            message: currentMessage.trimmed
-                        )
-                        clearMessageOnSuccessfulSend()
+                    ) {
+                        Task {
+                            await messageViewModel.sendMessage(
+                                with: conversationId,
+                                message: currentMessage.trimmed
+                            )
+                            clearMessageOnSuccessfulSend()
+                        }
+                    } onRetryFailedMessage: {
+                        Task {
+                            await messageViewModel.retryFailedMessage()
+                            clearMessageOnSuccessfulSend()
+                        }
                     }
-                } onRetryFailedMessage: {
-                    Task {
-                        await messageViewModel.retryFailedMessage()
-                        clearMessageOnSuccessfulSend()
+                } else {
+                    ErrorView(errorMessage: "Unable to load user information. Please try again.") {
+                        Task {
+                            await authManager.refreshCurrentSession()
+                        }
                     }
                 }
             }
         }
         .navigationTitle("Chat")
         .navigationBarTitleDisplayMode(.inline)
-        .task {
+        .task(id: authManager.currentUser?.id) {
             await messageViewModel.fetchMessages(for: conversationId)
 
             print("Real time starts listening to updates...")
