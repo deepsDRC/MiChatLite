@@ -14,40 +14,6 @@ struct FindUsersView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                HStack(spacing: 5) {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                        .scaledToFit()
-
-                    TextField("Search", text: $viewModel.searchText)
-                        .focused($isFocused)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal, 8)
-                        .submitLabel(.search)
-                        .onSubmit {
-                            Task {
-                                await viewModel.fetchUserProfiles()
-                            }
-                        }
-
-                    if !viewModel.searchText.isEmpty {
-                        Button {
-                            viewModel.searchText = ""
-                            isFocused = false
-
-                            Task {
-                                await viewModel.fetchUserProfiles()
-                            }
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
-                .padding()
-
-                Divider()
-
                 if viewModel.isLoading && viewModel.userProfiles.isEmpty {
                     ProgressView()
                         .tint(.accentColor)
@@ -63,6 +29,10 @@ struct FindUsersView: View {
                         systemImage: "person.2.slash"
                     )
                 } else {
+                    FindUsersSearchView(viewModel: viewModel)
+
+                    Divider()
+
                     List(viewModel.userProfiles) { profile in
                         FindUsersRow(profile: profile)
                             .onTapGesture {
@@ -73,7 +43,8 @@ struct FindUsersView: View {
                                 }
                             }
                     }
-                    .navigationDestination(item: $viewModel.conversationId) { conversationId in
+                    .navigationDestination(item: $viewModel.conversationId) {
+                        conversationId in
                         ChatView(conversationId: conversationId)
                     }
                     .listStyle(.plain)
@@ -90,6 +61,45 @@ struct FindUsersView: View {
         .task {
             await viewModel.fetchUserProfiles()
         }
+    }
+}
+
+private struct FindUsersSearchView: View {
+    @Bindable var viewModel: FindUsersViewModel
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.gray)
+                .scaledToFit()
+
+            TextField("Search", text: $viewModel.searchText)
+                .focused($isFocused)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.horizontal, 8)
+                .submitLabel(.search)
+                .onSubmit {
+                    Task {
+                        await viewModel.fetchUserProfiles()
+                    }
+                }
+
+            if !viewModel.searchText.isEmpty {
+                Button {
+                    viewModel.searchText = ""
+                    isFocused = false
+
+                    Task {
+                        await viewModel.fetchUserProfiles()
+                    }
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding()
     }
 }
 

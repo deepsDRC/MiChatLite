@@ -5,7 +5,6 @@
 //  Created by Deepu Ramachandran on 16/09/26.
 //
 
-//import Auth
 import Foundation
 import SwiftUI
 
@@ -17,6 +16,12 @@ struct ChatView: View {
 
     @Environment(AuthenticationManager.self)
     private var authManager
+
+    private func clearMessageOnSuccessfulSend() {
+        if messageViewModel.messageLifeCycleStage == .sent {
+            currentMessage = ""
+        }
+    }
 
     var body: some View {
         VStack {
@@ -39,17 +44,20 @@ struct ChatView: View {
 
                 ChatComposerView(
                     message: $currentMessage,
-                    isLoading: messageViewModel.isLoading
+                    messageLifeCycleStage: messageViewModel.messageLifeCycleStage,
+
                 ) {
                     Task {
                         await messageViewModel.sendMessage(
                             with: conversationId,
                             message: currentMessage.trimmed
                         )
-
-                        if messageViewModel.errorMessage == nil {
-                            currentMessage = ""
-                        }
+                        clearMessageOnSuccessfulSend()
+                    }
+                } onRetryFailedMessage: {
+                    Task {
+                        await messageViewModel.retryFailedMessage()
+                        clearMessageOnSuccessfulSend()
                     }
                 }
             }
