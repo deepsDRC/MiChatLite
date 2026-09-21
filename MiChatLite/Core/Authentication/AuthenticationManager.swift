@@ -12,6 +12,7 @@ import Supabase
 protocol AuthSessionService {
     func observeAuthState() async
     func signOut() async
+    func refreshCurrentSession() async
 }
 
 @Observable
@@ -75,6 +76,18 @@ final class AuthenticationManager: AuthSessionService {
             try await supabase.auth.signOut()
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+
+    func refreshCurrentSession() async {
+        do {
+            let session = try await supabase.auth.refreshSession()
+            currentUser = session.user
+            isAuthenticated = true
+        } catch {
+            errorMessage = error.localizedDescription
+            currentUser = nil
+            isAuthenticated = false
         }
     }
 }
