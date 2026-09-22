@@ -7,6 +7,19 @@
 
 import Foundation
 
+protocol OutgoingMessageQueueProtocol {
+    func enqueue(_ message: OutgoingMessage)
+
+    func nextPendingMessage() -> OutgoingMessage?
+
+    func updateMessage(
+        messageId: UUID,
+        stage: OutgoingMessageLifeCycleStage
+    )
+    
+    func dequeue(messageId: UUID)
+}
+
 enum OutgoingMessageLifeCycleStage {
     case pending
     case sending
@@ -27,12 +40,12 @@ enum OutgoingMessageLifeCycleStage {
     }
 }
 
-struct OutgoingMessage {
+struct OutgoingMessage: Equatable {
 
     let localMessageId: UUID
     let conversationId: UUID
     let senderId: UUID
     let message: String
     let createdAt: Date
-    let messageLifeCycleStage: OutgoingMessageLifeCycleStage
+    var messageLifeCycleStage: OutgoingMessageLifeCycleStage
 }
