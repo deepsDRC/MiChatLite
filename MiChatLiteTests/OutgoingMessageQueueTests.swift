@@ -37,19 +37,19 @@ final class OutgoingMessageQueueTests: XCTestCase {
         queue.enqueue(messageB)
         queue.enqueue(messageC)
 
-        XCTAssertEqual(queue.nextPendingMessage(), messageA)
+        XCTAssertEqual(queue.pendingMessages(), [messageA, messageB, messageC])
 
         queue.updateMessage(messageId: messageA.localMessageId, stage: .sending)
 
-        XCTAssertEqual(queue.nextPendingMessage(), messageB)
+        XCTAssertEqual(queue.pendingMessages(), [messageB, messageC])
 
         queue.updateMessage(messageId: messageB.localMessageId, stage: .sending)
 
-        XCTAssertEqual(queue.nextPendingMessage(), messageC)
+        XCTAssertEqual(queue.pendingMessages(), [messageC])
 
         queue.updateMessage(messageId: messageC.localMessageId, stage: .sending)
 
-        XCTAssertNil(queue.nextPendingMessage())
+        XCTAssertTrue(queue.pendingMessages().isEmpty)
     }
 
     func testSuccessfulMessageIsDequeued() {
@@ -63,13 +63,13 @@ final class OutgoingMessageQueueTests: XCTestCase {
         let queue = OutgoingMessageQueue()
         queue.enqueue(message)
 
-        XCTAssertEqual(queue.nextPendingMessage(), message)
+        XCTAssertEqual(queue.pendingMessages(), [message])
 
         queue.updateMessage(messageId: message.localMessageId, stage: .sending)
         queue.updateMessage(messageId: message.localMessageId, stage: .sent)
         queue.dequeue(messageId: message.localMessageId)
 
-        XCTAssertNil(queue.nextPendingMessage())
+        XCTAssertTrue(queue.pendingMessages().isEmpty)
     }
 
     func testFailedMessageRemainsInQueue() {
@@ -83,19 +83,19 @@ final class OutgoingMessageQueueTests: XCTestCase {
         let queue = OutgoingMessageQueue()
         queue.enqueue(message)
 
-        XCTAssertEqual(queue.nextPendingMessage(), message)
+        XCTAssertEqual(queue.pendingMessages(), [message])
 
         queue.updateMessage(messageId: message.localMessageId, stage: .sending)
 
-        XCTAssertNil(queue.nextPendingMessage())
+        XCTAssertTrue(queue.pendingMessages().isEmpty)
 
         queue.updateMessage(messageId: message.localMessageId, stage: .failed)
 
-        XCTAssertNil(queue.nextPendingMessage())
+        XCTAssertTrue(queue.pendingMessages().isEmpty)
 
         queue.updateMessage(messageId: message.localMessageId, stage: .pending)
 
-        XCTAssertEqual(queue.nextPendingMessage(), message)
+        XCTAssertEqual(queue.pendingMessages(), [message])
 
     }
 }
