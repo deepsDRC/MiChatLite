@@ -15,7 +15,7 @@ enum MessageSendError: Error {
     case unknown(Error)
 }
 
-protocol MessageServiceProtocol {
+protocol MessageServiceProtocol: Sendable {
     func fetchMessages(for conversationId: UUID) async throws -> [Message]
     func sendMessage(with conversationId: UUID, message: String) async throws
         -> Message

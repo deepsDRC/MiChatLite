@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol OutgoingMessageQueueProtocol {
+nonisolated protocol OutgoingMessageQueueProtocol: Sendable {
     func enqueue(_ message: OutgoingMessage)
 
-    func nextPendingMessage() -> OutgoingMessage?
+    func pendingMessages() -> [OutgoingMessage]
 
     func updateMessage(
         messageId: UUID,
@@ -20,7 +20,7 @@ protocol OutgoingMessageQueueProtocol {
     func dequeue(messageId: UUID)
 }
 
-enum OutgoingMessageLifeCycleStage {
+nonisolated enum OutgoingMessageLifeCycleStage {
     case pending
     case sending
     case sent
@@ -40,7 +40,7 @@ enum OutgoingMessageLifeCycleStage {
     }
 }
 
-struct OutgoingMessage: Equatable {
+nonisolated struct OutgoingMessage: Equatable, Sendable {
 
     let localMessageId: UUID
     let conversationId: UUID
